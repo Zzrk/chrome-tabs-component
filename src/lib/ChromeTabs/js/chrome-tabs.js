@@ -1,16 +1,3 @@
-// ((window, factory) => {
-//   if (typeof define == 'function' && define.amd) {
-//     define(['draggabilly'], Draggabilly => factory(window, Draggabilly))
-//   } else if (typeof module == 'object' && module.exports) {
-//     module.exports = factory(window, require('draggabilly'))
-//   } else {
-//     window.ChromeTabs = factory(window, window.Draggabilly)
-//   }
-// })(window, (window, Draggabilly) => {
-
-
-//   return ChromeTabs
-// })
 import Draggabilly from 'draggabilly';
 
 const TAB_CONTENT_MARGIN = 9
