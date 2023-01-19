@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react'
-import ChromeTabs from './lib/ChromeTabs'
+import ChromeTabs, { TabInfo } from './lib/ChromeTabs'
 import './App.css'
 
 const App = () => {
-  const [tabs, setTabs] = useState([
+  const [tabs, setTabs] = useState<TabInfo[]>([
     {
       key: '0',
       icon: 'https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web//static/favicons/favicon-16x16.png',
       title: '稀土掘金',
       link: 'https://juejin.cn/',
-      active: "true"
+      active: 'true'
     },
     {
       key: '1',
       icon: 'https://static.leetcode.cn/cn-mono-assets/production/assets/favicon-notification-16x16.123721dc.png',
       title: '力扣',
-      link: 'https://leetcode.cn/'
+      link: 'https://leetcode.cn/',
+      active: 'false'
     }
   ])
   const [activeTabKey, setActiveTabKey] = useState('0')
@@ -33,7 +34,7 @@ const App = () => {
     <div className="app-container">
       <ChromeTabs
         tabs={tabs}
-        onActiveTabChange={setActiveTabKey}
+        onActiveTabChange={(tabs, key) => { setTabs(tabs); setActiveTabKey(key) }}
         onTabAdd={key => console.log(key)}
         onTabRemove={key => console.log(key)}
       ></ChromeTabs>

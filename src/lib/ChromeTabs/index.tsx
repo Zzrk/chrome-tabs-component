@@ -2,30 +2,35 @@
 import './css/chrome-tabs.css';
 import './css/chrome-tabs-dark-theme.css';
 import ChromeTabsClass from './js/chrome-tabs.js';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-interface TabInfo {
+export interface TabInfo {
   key: string,
   icon?: string,
   title?: string,
   [key: string]: any,
 }
 const ChromeTabs = (
-  { tabs, onActiveTabChange, onTabAdd, onTabRemove }:
+  { tabs: originTabs, onActiveTabChange, onTabAdd, onTabRemove }:
     {
       tabs: TabInfo[],
-      onActiveTabChange: (key: string) => void,
-      onTabAdd: (key: string) => void,
-      onTabRemove: (key: string) => void,
+      onActiveTabChange: (tabs: TabInfo[], key: string) => void,
+      onTabAdd: (tabs: TabInfo[], key: string) => void,
+      onTabRemove: (tabs: TabInfo[], key: string) => void,
     }
 ) => {
+  const [tabs, setTabs] = useState(originTabs)
   useEffect(() => {
     const el = document.querySelector('.chrome-tabs')
     const chromeTabs = new ChromeTabsClass()
 
     chromeTabs.init(el)
 
-    el?.addEventListener('activeTabChange', ({ detail }) => onActiveTabChange(detail.tabEl.getAttribute('data-key')))
+    el?.addEventListener('activeTabChange', ({ detail }) => {
+      const key = detail.tabEl.getAttribute('data-key');
+      setTabs(tabs.map(tab => tab.key === key ? { ...tab, active: "true" } : { ...tab, active: 'false' }))
+      onActiveTabChange(tabs, key)
+    })
     el?.addEventListener('tabAdd', ({ detail }) => onTabAdd(detail.tabEl.getAttribute('data-key')))
     el?.addEventListener('tabRemove', ({ detail }) => onTabRemove(detail.tabEl.getAttribute('data-key')))
   }, [])
